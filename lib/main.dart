@@ -17,22 +17,26 @@ class _MainState extends State<Main> {
     return MaterialApp(
       home: App(),
       theme: _theme(),
+      //theme: ThemeData.dark(),
     );
   }
 }
 
 ThemeData _theme() {
   return ThemeData(
-      // primarySwatch: Colors.blue,
-      // visualDensity: VisualDensity.adaptivePlatformDensity,
-      // scaffoldBackgroundColor: Color(0xFF1F2C34),
-      // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      //   backgroundColor: Color(0xFF2F3D46),
-      //   selectedItemColor: Colors.white,
-      //   unselectedItemColor: Color(0xFF788388),
-      //   showUnselectedLabels: true,
-      //   type: BottomNavigationBarType.fixed,
-      //   elevation: 10,
-      // ),
-      );
+    colorScheme: ColorScheme.dark(),
+    accentColor: Color(0xFFBB86FC),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      foregroundColor: Colors.white,
+      backgroundColor: Color(0xFFBB86FC),
+    ),
+    // primarySwatch: Colors.blue,
+    // visualDensity: VisualDensity.adaptivePlatformDensity,
+    // scaffoldBackgroundColor: Color(0xFF1F2C34),
+    // bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    //   selectedItemColor: Colors.white,
+    //   showUnselectedLabels: true,
+    //   elevation: 10,
+    // ),
+  );
 }

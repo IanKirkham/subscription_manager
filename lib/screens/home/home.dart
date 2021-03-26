@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:subscription_manager/screens/subscription/subscription.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -9,9 +10,9 @@ class Home extends StatelessWidget {
           physics: BouncingScrollPhysics(),
           slivers: [
             SliverAppBar(
-              snap: true,
+              //snap: true,
               forceElevated: true,
-              floating: true,
+              //floating: true,
               toolbarHeight: MediaQuery.of(context).size.height / 3.5,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: false,
@@ -46,17 +47,45 @@ class Home extends StatelessWidget {
                   ),
                 );
               }
-
               return Card(
-                child: ListTile(
-                  onTap: () {
-                    Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text("Tapped item $index")));
-                  },
-                  leading: FlutterLogo(size: 72.0),
-                  title: Text("List item $index"),
-                  subtitle: Text("blah blah blah blah blah"),
-                  trailing: Icon(Icons.more_vert),
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 10,
+                  child: Center(
+                    child: ListTile(
+                      onTap: () {
+                        // Scaffold.of(context).showSnackBar(
+                        //     SnackBar(content: Text("Tapped item $index")));
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SubscriptionView(),
+                          ),
+                        );
+                      },
+                      leading: FlutterLogo(size: 50.0),
+                      title: Text(
+                        "List item $index",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      //subtitle: Text("Billed on 3/18/21"),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "\$9.99",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            "Billed on 3/18/21",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               );
             })),

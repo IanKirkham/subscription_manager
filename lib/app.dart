@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/categories/categories.dart';
 import 'screens/home/home.dart';
+import 'screens/new_subscription/new_subscription.dart';
 import 'widgets/tab_item.dart';
 
 GlobalKey navBarGlobalKey = GlobalKey(debugLabel: 'bottomAppBar');
@@ -37,7 +38,15 @@ class _AppState extends State<App> {
           !await currentTab.navigatorKey.currentState.maybePop(),
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => NewSubscription(),
+            //   ),
+            // );
+            Navigator.of(context).push(_createRoute());
+          },
           tooltip: "New Subscription",
           child: Icon(Icons.add),
         ),
@@ -85,4 +94,22 @@ class _AppState extends State<App> {
           builder: (context) => tabItem.page,
         ),
       );
+}
+
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => NewSubscription(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var begin = Offset(0.0, 1.0);
+      var end = Offset.zero;
+      var curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }
