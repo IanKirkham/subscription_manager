@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:subscription_manager/screens/subscription/subscription.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:sliver_tools/sliver_tools.dart';
+import 'package:subscription_manager/main.dart';
+import 'package:subscription_manager/screens/subscription_view/subscription_view.dart';
+
+import '../../data.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -10,10 +16,12 @@ class Home extends StatelessWidget {
           physics: BouncingScrollPhysics(),
           slivers: [
             SliverAppBar(
+              elevation: 0,
               //snap: true,
-              forceElevated: true,
+              //forceElevated: true,
               //floating: true,
-              toolbarHeight: MediaQuery.of(context).size.height / 3.5,
+              //pinned: true,
+              toolbarHeight: MediaQuery.of(context).size.height / 4,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: false,
                 titlePadding: EdgeInsets.only(left: 15),
@@ -26,71 +34,122 @@ class Home extends StatelessWidget {
                       style: TextStyle(fontSize: 18),
                     ),
                     SizedBox(height: 5),
-                    Text(
-                      "\$23.99",
-                      style: TextStyle(fontSize: 70),
-                    ),
+                    Consumer(builder: (context, watch, child) {
+                      final subscriptionList =
+                          watch(subscriptionsProvider.state);
+
+                      List<Subscription> list = subscriptionList
+                          .where((item) =>
+                              item.billDate.month == DateTime.now().month)
+                          .toList();
+
+                      double total = 0;
+                      list.forEach((item) => total += item.amount);
+
+                      return Text("\$" + total.toStringAsFixed(2),
+                          style: TextStyle(fontSize: 70));
+                    }),
                     SizedBox(height: 5),
                   ],
                 ),
               ),
             ),
-            SliverList(delegate: SliverChildBuilderDelegate((context, index) {
-              if (index == 0 || index == 4) {
-                return Container(
-                  padding: EdgeInsets.all(12),
-                  child: Text(
-                    "Title here",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                );
-              }
-              return Card(
-                child: Container(
-                  height: MediaQuery.of(context).size.height / 10,
-                  child: Center(
-                    child: ListTile(
-                      onTap: () {
-                        // Scaffold.of(context).showSnackBar(
-                        //     SnackBar(content: Text("Tapped item $index")));
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => SubscriptionView(),
-                          ),
-                        );
-                      },
-                      leading: FlutterLogo(size: 50.0),
-                      title: Text(
-                        "List item $index",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      //subtitle: Text("Billed on 3/18/21"),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            "\$9.99",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            "Billed on 3/18/21",
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            })),
+            _buildFullList(),
           ],
         ),
+      ),
+    );
+  }
+
+  MultiSliver _buildFullList() {
+    return MultiSliver(
+      pushPinnedChildren: true,
+      children: [
+        _sliverHeader("This month"),
+        Consumer(builder: (context, watch, child) {
+          final subscriptionList = watch(subscriptionsProvider.state);
+          return _sliverList(subscriptionList
+              .where((item) => item.billDate.month == DateTime.now().month)
+              .toList());
+        }),
+        _sliverHeader("Upcoming"),
+        Consumer(builder: (context, watch, child) {
+          final subscriptionList = watch(subscriptionsProvider.state);
+          return _sliverList(subscriptionList
+              .where((item) => item.billDate.month == DateTime.now().month + 1)
+              .toList());
+        }),
+      ],
+    );
+  }
+
+  SliverPinnedHeader _sliverHeader(String title) {
+    return SliverPinnedHeader(
+      child: Container(
+        height: 50,
+        padding: EdgeInsets.only(left: 10),
+        alignment: Alignment.centerLeft,
+        color: Color(0xff2e2e2e),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
+  }
+
+  SliverList _sliverList(List<Subscription> subscriptionList) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Card(
+              child: ListTile(
+                contentPadding: EdgeInsets.all(8),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          SubscriptionView(subscriptionList[index]),
+                    ),
+                  );
+                },
+                leading: SizedBox(
+                    height: 35,
+                    width: 35,
+                    child: subscriptionList[index].serviceIcon),
+                title: Text(
+                  subscriptionList[index].service,
+                  style: TextStyle(fontSize: 18),
+                ),
+                //subtitle: Text("Billed on 3/18/21"),
+                trailing: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "\$ ${subscriptionList[index].amount.toStringAsFixed(2)}",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      "Bill due on " +
+                          DateFormat.yMd()
+                              .format(subscriptionList[index].billDate),
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+        childCount: subscriptionList.length,
       ),
     );
   }

@@ -39,12 +39,6 @@ class _AppState extends State<App> {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => NewSubscription(),
-            //   ),
-            // );
             Navigator.of(context).push(_createRoute());
           },
           tooltip: "New Subscription",
