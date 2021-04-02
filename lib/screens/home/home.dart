@@ -72,7 +72,7 @@ class Home extends StatelessWidget {
               .where((item) => item.billDate.month == DateTime.now().month)
               .toList());
         }),
-        _sliverHeader("Upcoming"),
+        _sliverHeader("Next month"),
         Consumer(builder: (context, watch, child) {
           final subscriptionList = watch(subscriptionsProvider.state);
           return _sliverList(subscriptionList

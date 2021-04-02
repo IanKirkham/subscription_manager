@@ -59,13 +59,14 @@ class _SubscriptionViewState extends State<SubscriptionView> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _getDateInfoCard(
                         "Subscriber since",
                         DateFormat.yMd().format(widget.subscription.startDate),
-                        context), // TODO: change DateTime.now() to real data
+                        context),
                     _getAmountInfoCard(
                         "Bill amount",
                         widget.subscription.amount,
@@ -73,19 +74,23 @@ class _SubscriptionViewState extends State<SubscriptionView> {
                         context),
                   ],
                 ),
-                Row(
-                  children: [
-                    Text("Notify me"),
-                    MaterialButton(
-                      child: Text(_formatNotification(
-                          widget.subscription.notification)),
-                      onPressed: () {},
-                      color: Color(0xFF424242),
-                    ),
-                    Text("prior to charge")
-                  ],
+                SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      Text("Notify me   "),
+                      MaterialButton(
+                        child: Text(_formatNotification(
+                            widget.subscription.notification)),
+                        onPressed: () {},
+                        color: Color(0xFF444444),
+                      ),
+                      Text("   prior to charge"),
+                    ],
+                  ),
                 ),
-                Text("Billing History"),
+                sectionTitle("Billing History"),
                 ListView.builder(
                   itemCount: widget.subscription.billingHistory.length,
                   primary: false,
@@ -94,6 +99,7 @@ class _SubscriptionViewState extends State<SubscriptionView> {
                     return Column(
                       children: [
                         ListTile(
+                          leading: Icon(Icons.check_box_outlined),
                           title:
                               Text(widget.subscription.billingHistory[index]),
                         ),
@@ -111,6 +117,13 @@ class _SubscriptionViewState extends State<SubscriptionView> {
     );
   }
 
+  Widget sectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 15, 0, 10),
+      child: Text(title, style: Theme.of(context).textTheme.headline6),
+    );
+  }
+
   String _formatNotification(List<dynamic> notification) {
     if (notification[0].toString() != "1") {
       return notification[0].toString() + " " + notification[1] + "s";
@@ -120,13 +133,38 @@ class _SubscriptionViewState extends State<SubscriptionView> {
 
   Container _getDateInfoCard(String title, dynamic data, BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 3,
+      width: MediaQuery.of(context).size.width / 2.5,
       height: MediaQuery.of(context).size.height / 5,
-      color: Color(0xff424242),
-      child: Column(
+      decoration: BoxDecoration(
+        color: Color(0xff424242),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Stack(
         children: [
-          Text(title),
-          Text(data.toString()),
+          Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(13),
+                child: Icon(Icons.flag, size: 60),
+              )),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(title, style: TextStyle(fontSize: 16)),
+                  SizedBox(height: 2),
+                  Text(data.toString(),
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 24,
+                      )),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -135,13 +173,38 @@ class _SubscriptionViewState extends State<SubscriptionView> {
   Container _getAmountInfoCard(
       String title, double amount, String recurring, BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 3,
+      width: MediaQuery.of(context).size.width / 2.5,
       height: MediaQuery.of(context).size.height / 5,
-      color: Color(0xff424242),
-      child: Column(
+      decoration: BoxDecoration(
+        color: Color(0xff424242),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Stack(
         children: [
-          Text(title),
-          Text(_formatAmount(amount, recurring)),
+          Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(13),
+                child: Icon(Icons.attach_money_rounded, size: 60),
+              )),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(title, style: TextStyle(fontSize: 16)),
+                  SizedBox(height: 2),
+                  Text(_formatAmount(amount, recurring),
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 24,
+                      )),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

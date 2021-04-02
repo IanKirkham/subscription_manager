@@ -3,6 +3,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:subscription_manager/main.dart';
 import 'package:subscription_manager/widgets/customTextField.dart';
@@ -22,6 +23,8 @@ class _NewSubscriptionState extends State<NewSubscription> {
   List<dynamic> notification;
   List<int> pickerIndex;
   String dropdownValue;
+
+  final buttonList = ["Day", "Week", "Month", "Year"];
 
   @override
   void initState() {
@@ -122,7 +125,7 @@ class _NewSubscriptionState extends State<NewSubscription> {
                                         Text(DateFormat.MMMM().format(date))),
                               ),
                               Container(
-                                color: Color(0xFF424242),
+                                color: Color(0xFF444444),
                                 height: MediaQuery.of(context).size.height / 12,
                                 child: Align(
                                   alignment: Alignment.bottomCenter,
@@ -134,7 +137,7 @@ class _NewSubscriptionState extends State<NewSubscription> {
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Color(0xFF424242),
+                                  color: Color(0xFF444444),
                                   borderRadius: BorderRadius.only(
                                     bottomLeft: Radius.circular(5),
                                     bottomRight: Radius.circular(5),
@@ -162,61 +165,85 @@ class _NewSubscriptionState extends State<NewSubscription> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Container(
-                        width: MediaQuery.of(context).size.width / 2.3,
+                        width: MediaQuery.of(context).size.width / 2.31,
                         height: MediaQuery.of(context).size.height * 0.15,
                         decoration: BoxDecoration(
-                          color: Color(0xFF424242),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5),
-                          ),
-                        ),
+                            //color: Colors.pink,
+                            // borderRadius: BorderRadius.all(
+                            //   Radius.circular(5),
+                            // ),
+                            ),
                         child: Stack(
                           children: [
-                            Align(
-                              alignment: Alignment.center,
-                              child: DropdownButton<String>(
-                                value: dropdownValue,
-                                iconSize: 24,
-                                elevation: 16,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    if (newValue != null) {
-                                      dropdownValue = newValue;
-                                    }
-                                  });
-                                },
-                                items: <String>[
-                                  'Day',
-                                  'Week',
-                                  'Month',
-                                  'Year'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: value == dropdownValue
-                                        ? Text(value,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .accentColor))
-                                        : Text(value),
-                                  );
-                                }).toList(),
-                              ),
+                            GroupButton(
+                              selectedButtons: ["Month"],
+                              spacing: 10,
+                              borderRadius: BorderRadius.circular(5),
+                              onSelected: (index, isSelected) => setState(() {
+                                dropdownValue = buttonList[index];
+                              }),
+                              buttonWidth: 80,
+                              buttonHeight: 40,
+                              selectedColor: Theme.of(context).accentColor,
+                              unselectedColor: Color(0xff444444),
+                              unselectedTextStyle:
+                                  TextStyle(fontSize: 14, color: Colors.white),
+                              buttons: buttonList,
                             ),
                             Align(
                               alignment: Alignment.bottomCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Next Bill date: " +
-                                      DateFormat.yMd()
-                                          .format(_getNextBillDate(date)),
-                                ),
-                              ),
+                              child: Text("Next bill: " +
+                                  DateFormat.yMd()
+                                      .format(_getNextBillDate(date))),
                             ),
                           ],
                         ),
                       ),
+                      // child: Stack(
+                      //   children: [
+                      //     Align(
+                      //       alignment: Alignment.center,
+                      //       child: DropdownButton<String>(
+                      //         value: dropdownValue,
+                      //         icon: SizedBox(),
+                      //         onChanged: (newValue) {
+                      //           setState(() {
+                      //             if (newValue != null) {
+                      //               dropdownValue = newValue;
+                      //             }
+                      //           });
+                      //         },
+                      //         items: <String>[
+                      //           'Day',
+                      //           'Week',
+                      //           'Month',
+                      //           'Year'
+                      //         ].map<DropdownMenuItem<String>>((String value) {
+                      //           return DropdownMenuItem<String>(
+                      //             value: value,
+                      //             child: value == dropdownValue
+                      //                 ? Text(value,
+                      //                     style: TextStyle(
+                      //                         color: Theme.of(context)
+                      //                             .accentColor))
+                      //                 : Text(value),
+                      //           );
+                      //         }).toList(),
+                      //       ),
+                      //     ),
+                      //     Align(
+                      //       alignment: Alignment.bottomCenter,
+                      //       child: Padding(
+                      //         padding: const EdgeInsets.all(2.0),
+                      //         child: Text(
+                      //           "Next bill: " +
+                      //               DateFormat.yMd()
+                      //                   .format(_getNextBillDate(date)),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ),
                   ],
                 ),
@@ -233,7 +260,7 @@ class _NewSubscriptionState extends State<NewSubscription> {
                     onPressed: () {
                       showNotificationPicker(context, pickerIndex);
                     },
-                    color: Color(0xFF424242),
+                    color: Color(0xFF444444),
                   ),
                   Text("   prior to charge"),
                 ],
@@ -423,7 +450,11 @@ class _NewSubscriptionState extends State<NewSubscription> {
         },
         dropdownBuilder: (context, selectedItem, itemAsString) {
           if (current == null) {
-            return Text("Select " + title);
+            return Text("Select " + title.toLowerCase(),
+                style: TextStyle(
+                  color: Colors.white60,
+                  fontSize: 16,
+                ));
           }
           return Text(selectedItem.name);
           // return Padding(
