@@ -10,6 +10,7 @@ import 'package:subscription_manager/widgets/customTextField.dart';
 
 import '../../data.dart';
 
+// ignore: must_be_immutable
 class NewSubscription extends StatefulWidget {
   @override
   _NewSubscriptionState createState() => _NewSubscriptionState();
@@ -199,51 +200,6 @@ class _NewSubscriptionState extends State<NewSubscription> {
                           ],
                         ),
                       ),
-                      // child: Stack(
-                      //   children: [
-                      //     Align(
-                      //       alignment: Alignment.center,
-                      //       child: DropdownButton<String>(
-                      //         value: dropdownValue,
-                      //         icon: SizedBox(),
-                      //         onChanged: (newValue) {
-                      //           setState(() {
-                      //             if (newValue != null) {
-                      //               dropdownValue = newValue;
-                      //             }
-                      //           });
-                      //         },
-                      //         items: <String>[
-                      //           'Day',
-                      //           'Week',
-                      //           'Month',
-                      //           'Year'
-                      //         ].map<DropdownMenuItem<String>>((String value) {
-                      //           return DropdownMenuItem<String>(
-                      //             value: value,
-                      //             child: value == dropdownValue
-                      //                 ? Text(value,
-                      //                     style: TextStyle(
-                      //                         color: Theme.of(context)
-                      //                             .accentColor))
-                      //                 : Text(value),
-                      //           );
-                      //         }).toList(),
-                      //       ),
-                      //     ),
-                      //     Align(
-                      //       alignment: Alignment.bottomCenter,
-                      //       child: Padding(
-                      //         padding: const EdgeInsets.all(2.0),
-                      //         child: Text(
-                      //           "Next bill: " +
-                      //               DateFormat.yMd()
-                      //                   .format(_getNextBillDate(date)),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                     ),
                   ],
                 ),
@@ -312,12 +268,12 @@ class _NewSubscriptionState extends State<NewSubscription> {
         service: service.name,
         serviceIcon: service.icon,
         billDate: billDate,
-        billingHistory: [
-          "Billed " +
-              textController.text +
-              " on " +
-              DateFormat.yMd().format(date)
-        ],
+        billingHistory: [],
+        //   "Billed " +
+        //       textController.text +
+        //       " on " +
+        //       DateFormat.yMd().format(date)
+        // ],
       );
       subscriptions.add(subscription);
       current = billDate;

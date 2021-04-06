@@ -91,24 +91,33 @@ class _SubscriptionViewState extends State<SubscriptionView> {
                   ),
                 ),
                 sectionTitle("Billing History"),
-                ListView.builder(
-                  itemCount: widget.subscription.billingHistory.length,
-                  primary: false,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        ListTile(
-                          leading: Icon(Icons.check_box_outlined),
-                          title:
-                              Text(widget.subscription.billingHistory[index]),
-                        ),
-                        Divider(),
-                      ],
-                    );
-                  },
-                  shrinkWrap: true,
-                ),
+                widget.subscription.billingHistory.length == 0
+                    ? Container(
+                        height: MediaQuery.of(context).size.height / 15,
+                        child: Center(
+                            child: Text("No billing history found",
+                                style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.white60))),
+                      )
+                    : ListView.builder(
+                        itemCount: widget.subscription.billingHistory.length,
+                        primary: false,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              ListTile(
+                                leading: Icon(Icons.check_box_outlined),
+                                title: Text(
+                                    widget.subscription.billingHistory[index]),
+                              ),
+                              Divider(),
+                            ],
+                          );
+                        },
+                        shrinkWrap: true,
+                      ),
               ],
             ),
           ],

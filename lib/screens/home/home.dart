@@ -47,7 +47,8 @@ class Home extends StatelessWidget {
                       list.forEach((item) => total += item.amount);
 
                       return Text("\$" + total.toStringAsFixed(2),
-                          style: TextStyle(fontSize: 70));
+                          style: TextStyle(
+                              fontSize: 70, fontWeight: FontWeight.bold));
                     }),
                     SizedBox(height: 5),
                   ],
@@ -107,44 +108,49 @@ class Home extends StatelessWidget {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Card(
-              child: ListTile(
-                contentPadding: EdgeInsets.all(8),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          SubscriptionView(subscriptionList[index]),
-                    ),
-                  );
-                },
-                leading: SizedBox(
-                    height: 35,
-                    width: 35,
-                    child: subscriptionList[index].serviceIcon),
-                title: Text(
-                  subscriptionList[index].service,
-                  style: TextStyle(fontSize: 18),
-                ),
-                //subtitle: Text("Billed on 3/18/21"),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      "\$ ${subscriptionList[index].amount.toStringAsFixed(2)}",
+              child: Stack(
+                children: [
+                  ListTile(
+                    contentPadding: EdgeInsets.all(8),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SubscriptionView(subscriptionList[index]),
+                        ),
+                      );
+                    },
+                    leading: SizedBox(
+                        height: 35,
+                        width: 35,
+                        child: subscriptionList[index].serviceIcon),
+                    title: Text(
+                      subscriptionList[index].service,
                       style: TextStyle(fontSize: 18),
                     ),
-                    SizedBox(height: 2),
-                    Text(
-                      "Bill due on " +
-                          DateFormat.yMd()
-                              .format(subscriptionList[index].billDate),
-                      style: TextStyle(
-                        fontSize: 16,
+                    //subtitle: Text("Billed on 3/18/21"),
+                    trailing: Text(
+                      "\$ ${subscriptionList[index].amount.toStringAsFixed(2)}",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8, bottom: 5),
+                      child: Text(
+                        "Bill due on " +
+                            DateFormat.yMd()
+                                .format(subscriptionList[index].billDate),
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

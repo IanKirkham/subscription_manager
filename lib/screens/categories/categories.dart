@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:group_button/group_button.dart';
 import 'package:subscription_manager/main.dart';
 import 'package:subscription_manager/screens/subscription_view/subscription_view.dart';
 import '../../data.dart';
@@ -30,7 +31,56 @@ class Categories extends ConsumerWidget {
                       ),
                     ),
                     MaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Categories"),
+                                content: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.6,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: GroupButton(
+                                    spacing: 7,
+                                    borderRadius: BorderRadius.circular(5),
+                                    onSelected: (index, isSelected) {
+                                      if (isSelected) {
+                                        myCategories.add(categories[index]);
+                                      } else {
+                                        ListItem found;
+                                        myCategories.forEach((item) {
+                                          if (item.name ==
+                                              categories[index].name) {
+                                            found = item;
+                                          }
+                                        });
+                                        myCategories.remove(found);
+                                      }
+                                    },
+                                    buttonWidth:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    buttonHeight: 43,
+                                    selectedColor:
+                                        Theme.of(context).accentColor,
+                                    unselectedColor: Color(0xff444444),
+                                    unselectedTextStyle: TextStyle(
+                                        fontSize: 14, color: Colors.white),
+                                    unselectedBorderColor:
+                                        Theme.of(context).accentColor,
+                                    buttons: categories
+                                        .map((item) => item.name)
+                                        .toList(),
+                                    selectedButtons: myCategories
+                                        .map((item) => item.name)
+                                        .toList(),
+                                    isRadio: false,
+                                  ),
+                                ),
+                              );
+                            }).then((value) => print(value));
+                      },
                       child: Text("Edit"),
                       color: Theme.of(context).accentColor,
                     ),
@@ -91,6 +141,19 @@ class Categories extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Color checkColor(ListItem item) {
+    Color color;
+    myCategories.forEach((element) {
+      if (item.name == element.name) {
+        color = Colors.pink;
+      }
+    });
+    if (color == null) {
+      color = Colors.grey;
+    }
+    return color;
   }
 
   String _getCategoryTotal(String name, List<Subscription> subscriptionList) {
