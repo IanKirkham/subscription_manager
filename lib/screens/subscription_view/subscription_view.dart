@@ -74,12 +74,14 @@ class _SubscriptionViewState extends State<SubscriptionView> {
                         context),
                   ],
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     children: [
-                      Text("Notify me   "),
+                      Icon(Icons.notifications, size: 25),
+                      SizedBox(width: 5),
+                      //Text("Notify me   "),
                       MaterialButton(
                         child: Text(_formatNotification(
                             widget.subscription.notification)),
@@ -168,7 +170,7 @@ class _SubscriptionViewState extends State<SubscriptionView> {
                   Text(data.toString(),
                       style: TextStyle(
                         color: Theme.of(context).accentColor,
-                        fontSize: 24,
+                        fontSize: 22,
                       )),
                 ],
               ),
@@ -208,7 +210,7 @@ class _SubscriptionViewState extends State<SubscriptionView> {
                   Text(_formatAmount(amount, recurring),
                       style: TextStyle(
                         color: Theme.of(context).accentColor,
-                        fontSize: 24,
+                        fontSize: 22,
                       )),
                 ],
               ),
@@ -221,16 +223,16 @@ class _SubscriptionViewState extends State<SubscriptionView> {
 
   String _formatAmount(double amount, String recurring) {
     if (recurring == "Day") {
-      return "\$ " + amount.toString() + " / day";
+      return "\$ " + amount.toStringAsFixed(2) + " / day";
     }
     if (recurring == "Week") {
-      return "\$ " + amount.toString() + " / wk";
+      return "\$ " + amount.toStringAsFixed(2) + " / wk";
     }
     if (recurring == "Month") {
-      return "\$ " + amount.toString() + " / mo";
+      return "\$ " + amount.toStringAsFixed(2) + " / mo";
     }
     if (recurring == "Year") {
-      return "\$ " + amount.toString() + " / yr";
+      return "\$ " + amount.toStringAsFixed(2) + " / yr";
     }
     return "Error";
   }

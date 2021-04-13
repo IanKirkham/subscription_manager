@@ -9,6 +9,7 @@ class Categories extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final subscriptionList = watch(subscriptionsProvider.state);
+    final categoriesList = watch(categoriesProvider.state);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -58,6 +59,7 @@ class Categories extends ConsumerWidget {
                                         });
                                         myCategories.remove(found);
                                       }
+                                      context.read(categoriesProvider).update();
                                     },
                                     buttonWidth:
                                         MediaQuery.of(context).size.width * 0.8,
@@ -99,7 +101,7 @@ class Categories extends ConsumerWidget {
               ),
             ),
             ListView.builder(
-              itemCount: myCategories.length,
+              itemCount: categoriesList.length,
               primary: false,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
@@ -109,13 +111,13 @@ class Categories extends ConsumerWidget {
                       leading: SizedBox(
                           height: 35,
                           width: 35,
-                          child: myCategories[index].icon),
+                          child: categoriesList[index].icon),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(myCategories[index].name),
+                          Text(categoriesList[index].name),
                           Text(_getCategoryTotal(
-                              myCategories[index].name,
+                              categoriesList[index].name,
                               subscriptionList
                                   .where((item) =>
                                       item.billDate.month ==
@@ -124,7 +126,7 @@ class Categories extends ConsumerWidget {
                         ],
                       ),
                       children: _getChildren(
-                          myCategories[index].name,
+                          categoriesList[index].name,
                           context,
                           subscriptionList
                               .where((item) =>
@@ -143,18 +145,18 @@ class Categories extends ConsumerWidget {
     );
   }
 
-  Color checkColor(ListItem item) {
-    Color color;
-    myCategories.forEach((element) {
-      if (item.name == element.name) {
-        color = Colors.pink;
-      }
-    });
-    if (color == null) {
-      color = Colors.grey;
-    }
-    return color;
-  }
+  // Color checkColor(ListItem item) {
+  //   Color color;
+  //   categoriesList.forEach((element) {
+  //     if (item.name == element.name) {
+  //       color = Colors.pink;
+  //     }
+  //   });
+  //   if (color == null) {
+  //     color = Colors.grey;
+  //   }
+  //   return color;
+  // }
 
   String _getCategoryTotal(String name, List<Subscription> subscriptionList) {
     double total = 0.0;
@@ -187,6 +189,7 @@ class Categories extends ConsumerWidget {
               title: Row(
                 children: [
                   SizedBox(height: 35, width: 35, child: item.serviceIcon),
+                  SizedBox(width: 10),
                   Text(item.service),
                 ],
               ),

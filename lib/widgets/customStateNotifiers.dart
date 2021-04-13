@@ -10,3 +10,12 @@ class SubscriptionsList extends StateNotifier<List<Subscription>> {
     state = subscriptions;
   }
 }
+
+class CategoriesList extends StateNotifier<List<ListItem>> {
+  CategoriesList(List<ListItem> state) : super(state);
+
+  void update() {
+    myCategories.sort((a, b) => a.name.compareTo(b.name));
+    state = myCategories;
+  }
+}

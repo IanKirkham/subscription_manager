@@ -4,10 +4,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:subscription_manager/data.dart';
 
 import 'app.dart';
-import 'widgets/subscriptionsNotifier.dart';
+import 'widgets/customStateNotifiers.dart';
 
 final subscriptionsProvider = StateNotifierProvider<SubscriptionsList>(
-    (ref) => SubscriptionsList(subscriptions));
+  (ref) => SubscriptionsList(subscriptions),
+);
+
+final categoriesProvider = StateNotifierProvider<CategoriesList>(
+  (ref) => CategoriesList(myCategories),
+);
 
 void main() {
   runApp(ProviderScope(child: Main()));

@@ -66,7 +66,8 @@ class Home extends StatelessWidget {
     return MultiSliver(
       pushPinnedChildren: true,
       children: [
-        _sliverHeader("This month"),
+        _sliverHeader(
+            "This month (" + DateFormat.MMMM().format(DateTime.now()) + ")"),
         Consumer(builder: (context, watch, child) {
           final subscriptionList = watch(subscriptionsProvider.state);
           return _sliverList(subscriptionList
@@ -141,11 +142,10 @@ class Home extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8, bottom: 5),
                       child: Text(
-                        "Bill due on " +
-                            DateFormat.yMd()
-                                .format(subscriptionList[index].billDate),
+                        _formatDate(subscriptionList[index].billDate),
                         style: TextStyle(
                           fontSize: 14,
+                          color: Theme.of(context).accentColor,
                         ),
                       ),
                     ),
@@ -158,5 +158,21 @@ class Home extends StatelessWidget {
         childCount: subscriptionList.length,
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    final billDate = DateTime(date.year, date.month, date.day);
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final tomorrow = DateTime(now.year, now.month, now.day + 1);
+
+    if (billDate == today) {
+      return "Today";
+    } else if (billDate == tomorrow) {
+      return "Tomorrow";
+    } else {
+      return DateFormat.yMd().format(billDate);
+    }
   }
 }

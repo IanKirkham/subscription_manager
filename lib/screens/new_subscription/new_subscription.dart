@@ -71,11 +71,11 @@ class _NewSubscriptionState extends State<NewSubscription> {
             getDropdown(myCategories, "Category", category),
             sectionTitle("Amount"),
             Container(
-              width: MediaQuery.of(context).size.width * 0.6,
+              width: MediaQuery.of(context).size.width * 0.45,
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: CustomTextFormField(
                 obscureText: false,
-                hintText: "Enter subscription cost",
+                hintText: "Enter cost",
                 controller: textController,
                 inputFormatters: [
                   CurrencyTextInputFormatter(
@@ -164,9 +164,10 @@ class _NewSubscriptionState extends State<NewSubscription> {
                   children: [
                     sectionTitle("Billed every"),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.only(left: 10),
+                      //padding: const EdgeInsets.all(0),
                       child: Container(
-                        width: MediaQuery.of(context).size.width / 2.31,
+                        width: MediaQuery.of(context).size.width / 2,
                         height: MediaQuery.of(context).size.height * 0.15,
                         decoration: BoxDecoration(
                             //color: Colors.pink,
@@ -176,6 +177,7 @@ class _NewSubscriptionState extends State<NewSubscription> {
                             ),
                         child: Stack(
                           children: [
+                            //Container(color: Colors.blue), // delete me
                             GroupButton(
                               selectedButtons: ["Month"],
                               spacing: 10,
@@ -183,20 +185,20 @@ class _NewSubscriptionState extends State<NewSubscription> {
                               onSelected: (index, isSelected) => setState(() {
                                 dropdownValue = buttonList[index];
                               }),
-                              buttonWidth: 80,
-                              buttonHeight: 40,
+                              buttonWidth: 93,
+                              buttonHeight: 51,
                               selectedColor: Theme.of(context).accentColor,
                               unselectedColor: Color(0xff444444),
                               unselectedTextStyle:
                                   TextStyle(fontSize: 14, color: Colors.white),
                               buttons: buttonList,
                             ),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Text("Next bill: " +
-                                  DateFormat.yMd()
-                                      .format(_getNextBillDate(date))),
-                            ),
+                            // Align(
+                            //   alignment: Alignment.bottomCenter,
+                            //   child: Text("Next bill: " +
+                            //       DateFormat.yMd()
+                            //           .format(_getNextBillDate(date))),
+                            // ),
                           ],
                         ),
                       ),
@@ -206,19 +208,32 @@ class _NewSubscriptionState extends State<NewSubscription> {
               ],
             ),
             SizedBox(height: 7),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 48),
+                  child: Text("Next bill: " +
+                      DateFormat.yMd().format(_getNextBillDate(date))),
+                ),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
-                  Text("Notify me   "),
+                  Icon(Icons.notifications, size: 25),
+                  SizedBox(width: 5),
+                  // Text("Notify me   "),
                   MaterialButton(
-                    child: Text(_formatNotification()),
+                    child: Text(_formatNotification() + " before"),
                     onPressed: () {
                       showNotificationPicker(context, pickerIndex);
                     },
                     color: Color(0xFF444444),
                   ),
-                  Text("   prior to charge"),
+                  SizedBox(width: 10),
+                  //Text("prior to charge"),
                 ],
               ),
             ),

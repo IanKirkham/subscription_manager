@@ -110,6 +110,37 @@ final List<Subscription> subscriptions = [
     ],
   ),
   Subscription(
+    service: "Spotify",
+    serviceIcon: Image.asset("assets/spotify.png"),
+    category: "Music",
+    amount: 8.99,
+    startDate: DateTime(2020, 3, 27),
+    billDate: DateTime(2021, 4, 27),
+    recurring: "Month",
+    notification: [1, "day"],
+    billingHistory: [
+      "Billed \$8.99 on 3/27/2021",
+    ],
+  ),
+  Subscription(
+    service: "Rent",
+    serviceIcon: Image.asset("assets/rent.png"),
+    category: "Finance",
+    amount: 312.00,
+    startDate: DateTime(2020, 10, 1),
+    billDate: DateTime(2021, 5, 1),
+    recurring: "Month",
+    notification: [12, "hour"],
+    billingHistory: [
+      "Billed \$312.00 on 3/1/2021",
+      "Billed \$312.00 on 2/1/2021",
+      "Billed \$312.00 on 1/1/2021",
+      "Billed \$312.00 on 12/1/2020",
+      "Billed \$312.00 on 11/1/2020",
+      "Billed \$312.00 on 10/1/2020",
+    ],
+  ),
+  Subscription(
     service: "OneDrive",
     serviceIcon: Image.asset("assets/onedrive.png"),
     category: "Education",
@@ -122,6 +153,19 @@ final List<Subscription> subscriptions = [
       "Billed \$7.94 on 2/1/2021",
       "Billed \$7.94 on 3/1/2021",
       "Billed \$7.94 on 4/1/2021",
+    ],
+  ),
+  Subscription(
+    service: "Apple Music",
+    serviceIcon: Image.asset("assets/apple_music.png"),
+    category: "Music",
+    amount: 5.08,
+    startDate: DateTime(2020, 4, 3),
+    billDate: DateTime(2021, 5, 3),
+    recurring: "Month",
+    notification: [1, "day"],
+    billingHistory: [
+      "Billed \$8.99 on 4/3/2021",
     ],
   ),
   Subscription(
@@ -152,15 +196,28 @@ final List<Subscription> subscriptions = [
       "Billed \$12.99 on 3/18/2021",
     ],
   ),
+  Subscription(
+    service: "Spotify",
+    serviceIcon: Image.asset("assets/spotify.png"),
+    category: "Music",
+    amount: 8.99,
+    startDate: DateTime(2020, 3, 27),
+    billDate: DateTime(2021, 5, 27),
+    recurring: "Month",
+    notification: [1, "day"],
+    billingHistory: [
+      "Billed \$8.99 on 3/27/2021",
+    ],
+  ),
 ];
 
 final List<ListItem> myCategories = [
-  ListItem(name: "Books", icon: Image.asset("assets/categories/books.png")),
   ListItem(
       name: "Education", icon: Image.asset("assets/categories/education.png")),
   ListItem(
       name: "Entertainment",
       icon: Image.asset("assets/categories/entertainment.png")),
+  ListItem(name: "Finance", icon: Image.asset("assets/categories/finance.png")),
   ListItem(name: "Gaming", icon: Image.asset("assets/categories/games.png")),
   ListItem(name: "Music", icon: Image.asset("assets/categories/music.png")),
   ListItem(
