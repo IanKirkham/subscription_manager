@@ -69,21 +69,64 @@ class _NewSubscriptionState extends State<NewSubscription> {
             getDropdown(services, "Subscription", service),
             sectionTitle("Category"),
             getDropdown(myCategories, "Category", category),
-            sectionTitle("Amount"),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.45,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: CustomTextFormField(
-                obscureText: false,
-                hintText: "Enter cost",
-                controller: textController,
-                inputFormatters: [
-                  CurrencyTextInputFormatter(
-                    symbol: '\$ ',
-                  )
-                ],
-                keyboardType: TextInputType.number,
-              ),
+            Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    sectionTitle("Amount"),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: CustomTextFormField(
+                        obscureText: false,
+                        hintText: "Enter cost",
+                        controller: textController,
+                        inputFormatters: [
+                          CurrencyTextInputFormatter(
+                            symbol: '\$ ',
+                          )
+                        ],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    sectionTitle("Notifications"),
+                    GestureDetector(
+                      onTap: () {
+                        showNotificationPicker(context, pickerIndex);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        height: MediaQuery.of(context).size.height / 12.5,
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        margin: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xFF444444),
+                        ),
+                        child: Center(
+                          child: Text(
+                            _formatNotification() + " before",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // MaterialButton(
+                    //   child: Text(_formatNotification() + " before"),
+                    //   onPressed: () {
+                    //     showNotificationPicker(context, pickerIndex);
+                    //   },
+                    //   color: Color(0xFF444444),
+                    // ),
+                  ],
+                ),
+              ],
             ),
             Row(
               children: [
@@ -218,26 +261,26 @@ class _NewSubscriptionState extends State<NewSubscription> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  Icon(Icons.notifications, size: 25),
-                  SizedBox(width: 5),
-                  // Text("Notify me   "),
-                  MaterialButton(
-                    child: Text(_formatNotification() + " before"),
-                    onPressed: () {
-                      showNotificationPicker(context, pickerIndex);
-                    },
-                    color: Color(0xFF444444),
-                  ),
-                  SizedBox(width: 10),
-                  //Text("prior to charge"),
-                ],
-              ),
-            ),
-            SizedBox(height: 7),
+            // Padding(
+            //   padding: const EdgeInsets.all(10),
+            //   child: Row(
+            //     children: [
+            //       Icon(Icons.notifications, size: 25),
+            //       SizedBox(width: 5),
+            //       // Text("Notify me   "),
+            //       MaterialButton(
+            //         child: Text(_formatNotification() + " before"),
+            //         onPressed: () {
+            //           showNotificationPicker(context, pickerIndex);
+            //         },
+            //         color: Color(0xFF444444),
+            //       ),
+            //       SizedBox(width: 10),
+            //       //Text("prior to charge"),
+            //     ],
+            //   ),
+            // ),
+            SizedBox(height: 25),
             Container(
               height: MediaQuery.of(context).size.height / 15,
               width: double.infinity,
@@ -307,7 +350,7 @@ class _NewSubscriptionState extends State<NewSubscription> {
 
   Widget sectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 15, 0, 10),
+      padding: const EdgeInsets.fromLTRB(10, 20, 0, 10),
       child: Text(title, style: Theme.of(context).textTheme.headline6),
     );
   }

@@ -66,15 +66,17 @@ class Home extends StatelessWidget {
     return MultiSliver(
       pushPinnedChildren: true,
       children: [
-        _sliverHeader(
-            "This month (" + DateFormat.MMMM().format(DateTime.now()) + ")"),
+        _sliverHeader("This month ", DateFormat.MMMM().format(DateTime.now())),
         Consumer(builder: (context, watch, child) {
           final subscriptionList = watch(subscriptionsProvider.state);
           return _sliverList(subscriptionList
               .where((item) => item.billDate.month == DateTime.now().month)
               .toList());
         }),
-        _sliverHeader("Next month"),
+        _sliverHeader(
+            "Next month ",
+            DateFormat.MMMM().format(DateTime(DateTime.now().year,
+                DateTime.now().month + 1, DateTime.now().day))),
         Consumer(builder: (context, watch, child) {
           final subscriptionList = watch(subscriptionsProvider.state);
           return _sliverList(subscriptionList
@@ -85,18 +87,35 @@ class Home extends StatelessWidget {
     );
   }
 
-  SliverPinnedHeader _sliverHeader(String title) {
+  SliverPinnedHeader _sliverHeader(String title, String month) {
     return SliverPinnedHeader(
       child: Container(
         height: 50,
         padding: EdgeInsets.only(left: 10),
         alignment: Alignment.centerLeft,
         color: Color(0xff2e2e2e),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 18,
-          ),
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                color: Colors.grey[900],
+              ),
+              child: Text(
+                month,
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -172,7 +191,7 @@ class Home extends StatelessWidget {
     } else if (billDate == tomorrow) {
       return "Tomorrow";
     } else {
-      return DateFormat.yMd().format(billDate);
+      return DateFormat.MMMMd().format(billDate);
     }
   }
 }
